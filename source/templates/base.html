@@ -1,11 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <title>Chain App Dev - App Landing Page HTML5 Template</title>
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/templatemo-chain-app-dev.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animated.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
+
 </head>
+
 <body>
-    <h1>Hone</h1>
+
+   {% include 'header.html' %}
+
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/animation.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.js' %}"></script>
+    <script src="{% static 'js/popup.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 </body>
+
 </html>

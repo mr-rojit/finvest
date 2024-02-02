@@ -15,7 +15,6 @@ class DailyData(models.Model):
     high = models.FloatField()
     low = models.FloatField()
     close = models.FloatField()
-    adjusted_close = models.FloatField()
     volume = models.FloatField()
 
     created_at = models.DateTimeField(auto_now_add=True)
