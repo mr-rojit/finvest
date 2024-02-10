@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table class="table table-bordered table-striped custom-table">
+    <thead>
+        <tr>
+            <th>SYM</th>
+            <th>Name</th>
+            <th>Change</th>
+            <th>% Change</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in companies %}
+        {% if c.change > 0 %}
+        <tr class="table-success">
+            <td><a href="{% url 'get_historical_data' c.pk %}">{{c.symbol}}</a></td>
+            <td>{{c.name}}</td>
+            <td>{{c.change|floatformat:4}}</td>
+            <td>{{c.percentage_change|floatformat:4}} %</td>
+
+            {% if c.status %}
+            <td>Active</td>
+            {% endif %}
+        </tr>
+        {% else %}
+        <tr class="table-danger">
+            <td><a href="{% url 'get_historical_data' c.pk %}">{{c.symbol}}</a></td>
+            <td>{{c.name}}</td>
+            <td>{{c.change|floatformat:4}}</td>
+            <td>{{c.percentage_change|floatformat:4}} %</td>
+
+            {% if c.status %}
+            <td>Active</td>
+            {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
