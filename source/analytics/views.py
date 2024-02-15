@@ -1,7 +1,32 @@
+import datetime
 from django.shortcuts import render, get_object_or_404
 from companies.models import Company, DailyData
+from django.views import View
 
 def get_historical_data(request, pk):
     company = get_object_or_404(Company, pk=pk)
-    daily_data = DailyData.objects.filter(company=company)
-    return render(request, 'analytics/historical_data.html')
+    daily_data = DailyData.objects.filter(company=company).order_by('-date')
+    title = company.name
+    return render(request, 'analytics/historical_data.html',{'title':title,'history': daily_data})
+
+class Analysis(View):
+
+
+    def get(self, request, pk):
+        data_from = request.GET.get('from', None)
+        data_to = request.GET.get('to')
+        if not data_from:
+            data_from = datetime.datetime.now().date() - datetime.timedelta(days=30)
+        
+        if not data_to:
+            data_to = datetime.datetime.now().date()
+
+        company = get_object_or_404(Company, pk=pk)
+        daily_data = DailyData.objects.filter(company=company, date__gt=data_from).values('date', 'close')
+        print(daily_data)
+        context =  {
+            'data': daily_data
+        }
+        return render(request, 'analytics/default_chart.html', context=context)
+
+
