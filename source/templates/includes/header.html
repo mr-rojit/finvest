@@ -1,17 +1,18 @@
+{% load static %}
 <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <nav class="main-nav">
             <a href="index.html" class="logo">
-              <img src="assets/images/logo.png" alt="Finvest">
+              <img src="{% static 'images/logo_61.png' %}" alt="Finvest" style="width: 25%;">
             </a>
             <ul class="nav">
               <li class=""><a href="#top" class="active">Market</a></li>
-              <li class=""><a href="#services">Services</a></li>
+              <!-- <li class=""><a href="#services">Services</a></li>
               <li class=""><a href="#about">About</a></li>
               <li class=""><a href="#pricing">Pricing</a></li>
-              <li class=""><a href="#newsletter">Newsletter</a></li>
+              <li class=""><a href="#newsletter">Newsletter</a></li> -->
               <li><div class="gradient-button"><a id="modal_trigger" href="#modal"><i class="fa fa-sign-in-alt"></i> Sign In Now</a></div></li> 
             </ul>        
             <a class='menu-trigger'>

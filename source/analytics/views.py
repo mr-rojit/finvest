@@ -11,7 +11,6 @@ def get_historical_data(request, pk):
 
 class Analysis(View):
 
-
     def get(self, request, pk):
         data_from = request.GET.get('from', None)
         data_to = request.GET.get('to')
@@ -22,7 +21,7 @@ class Analysis(View):
             data_to = datetime.datetime.now().date()
 
         company = get_object_or_404(Company, pk=pk)
-        daily_data = DailyData.objects.filter(company=company, date__gt=data_from).values('date', 'close')
+        daily_data = DailyData.objects.filter(company=company, date__gt=data_from).values('date', 'close', 'open')
         print(daily_data)
         context =  {
             'data': daily_data
