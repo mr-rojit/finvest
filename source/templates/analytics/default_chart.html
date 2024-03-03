@@ -2,8 +2,8 @@
 
 {% block content %}
 
+<form action="" method="GET">
 <div class="row">
-    <form action="" method="GET">
         <div class="col-md-4">
             <input class="form-control" type="date" name="from" placeholder="Date from">
         </div>
@@ -15,15 +15,10 @@
         <div class="col-md-4">
             <input class="btn btn-primary" type="submit" name="" value="Fetch">
         </div>
-    </form>
-</div>
-<br>
-<div class="row">
-    <div class="col-md-2">
-        <input type="checkbox" name="show-open" id="show-open">
-        <label for="show-open">Show Open</label>
     </div>
-</div>
+</form>
+<br>
+
 
 <div class="row">
     <div class="col-md-12">
@@ -31,22 +26,15 @@
     </div>
 </div>
 
-
-
 <script>
     var ctx = document.getElementById('lineChart').getContext('2d');
     var dates = [];
     var prices = [];
-    let opens = [];
-    console.log(prices)
-    console.log(opens)
-
 
     // Extract dates and prices from the data
     {% for item in data %}
     dates.push('{{ item.date }}');
     prices.push('{{ item.close }}');
-    opens.push('{{ item.open }}');
 
     {% endfor %}
 
@@ -63,15 +51,6 @@
                 pointRadius: 0,
                 // fill: true
             },
-            {
-                label: 'open',
-                data: opens,
-                borderColor: 'rgba(0, 204, 0)',
-                backgroundColor: 'rgba(0, 204, 0, 0.2)',
-                borderWidth: 1,
-                pointRadius: 0,
-                // fill: true
-            }
             ]
         },
         options: {

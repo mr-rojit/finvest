@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/stock.js"></script>
+
+<div id="container" style="height: 400px;"></div>
+
+<script>
+    // Fetch data passed from Django view
+    const chartData = JSON.parse('{{ data | escapejs }}');
+    console.log(chartData)
+
+    Highcharts.stockChart('container', {
+        title: {
+            text: 'Candlestick Chart'
+        },
+        series: [{
+            type: 'candlestick',
+            name: 'OHLC Data',
+            data: chartData,
+            color: 'green',
+            upColor: 'green',
+            lineColor: 'black'
+        }]
+    });
+</script>
+{% endblock %}
