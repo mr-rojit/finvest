@@ -3,8 +3,31 @@
 {% block content %}
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/stock.js"></script>
+<h3 class="m-2">{{company.name}}</h3>
 
-<div id="container" style="height: 400px;"></div>
+<form action="" method="GET">
+    <div class="row">
+            <div class="col-md-4">
+                <input class="form-control" type="date" name="from" placeholder="Date from">
+            </div>
+    
+            <div class="col-md-4">
+                <input class="form-control" type="date" name="to" placeholder="Date to">
+            </div>
+    
+            <div class="col-md-4">
+                <input class="btn btn-primary" type="submit" name="" value="Fetch">
+            </div>
+        </div>
+    </form>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="{% url 'analytical-chart' company.pk %}"><button class="btn btn-info">Go to analytics view</button></a>
+        </div>
+    </div>
+    <br>
+<div id="container" style="height: 500px;"></div>
 
 <script>
     // Fetch data passed from Django view

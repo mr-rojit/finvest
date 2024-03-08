@@ -5,11 +5,11 @@
 <form action="" method="GET">
 <div class="row">
         <div class="col-md-4">
-            <input class="form-control" type="date" name="from" placeholder="Date from">
+            <input class="form-control" type="date" name="from" placeholder="Date from" value="{{request.GET.from}}">
         </div>
 
         <div class="col-md-4">
-            <input class="form-control" type="date" name="to" placeholder="Date to">
+            <input class="form-control" type="date" name="to" placeholder="Date to" value="{{request.GET.to}}">
         </div>
 
         <div class="col-md-4">
@@ -30,15 +30,23 @@
     var ctx = document.getElementById('lineChart').getContext('2d');
     var dates = [];
     var prices = [];
+    let rocs = []
 
     // Extract dates and prices from the data
     {% for item in data %}
     dates.push('{{ item.date }}');
     prices.push('{{ item.close }}');
 
+    if('{{request.GET.analysis}}' == 'roc'){
+        if('{{ item.roc }}' == 'None'){
+            rocs.push(null)
+        }else{
+            rocs.push('{{ item.roc }}')
+        }
+    }
     {% endfor %}
 
-    var myChart = new Chart(ctx, {
+    chart_obj = {
         type: 'line',
         data: {
             labels: dates,
@@ -71,7 +79,8 @@
                 }]
             }
         }
-    });
+    }
+    var myChart = new Chart(ctx, chart_obj );
 </script>
 
 {% endblock %}

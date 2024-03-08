@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <div>
             <h2>{{title}}</h2>
-            <a href="chart"><button class="btn btn-success">Analyse</button></a>
+            <a href="candle-chart"><button class="btn btn-success">Analyse</button></a>
         </div>
         <br>
         <table class="table table-bordered table-striped custom-table">
@@ -25,10 +25,10 @@
                 {% for i in history %}
                 <tr class="">
                     <td>{{i.date}}</td>
-                    <td>{{i.open}}</td>
-                    <td>{{i.high}}</td>
-                    <td>{{i.low}}</td>
-                    <td>{{i.close}}</td>
+                    <td>{{i.open|floatformat:4}}</td>
+                    <td>{{i.high|floatformat:4}}</td>
+                    <td>{{i.low|floatformat:4}}</td>
+                    <td>{{i.close|floatformat:4}}</td>
                     <td>{{i.volume}}</td>
 
                 </tr>
