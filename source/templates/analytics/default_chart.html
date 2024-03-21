@@ -22,7 +22,12 @@
 
 <div class="row">
     <div class="col-md-12">
-        <canvas id="lineChart" width="800" height="400"></canvas>
+        <canvas id="lineChart" width="800" height="350"></canvas>
+    </div>
+
+    <h3 class="mt-3 mb-3">TA</h3>
+    <div class="col-md-12">
+        <canvas id="ta-chart" width="800" height="300"></canvas>
     </div>
 </div>
 
@@ -30,20 +35,12 @@
     var ctx = document.getElementById('lineChart').getContext('2d');
     var dates = [];
     var prices = [];
-    let rocs = []
 
     // Extract dates and prices from the data
     {% for item in data %}
     dates.push('{{ item.date }}');
     prices.push('{{ item.close }}');
 
-    if('{{request.GET.analysis}}' == 'roc'){
-        if('{{ item.roc }}' == 'None'){
-            rocs.push(null)
-        }else{
-            rocs.push('{{ item.roc }}')
-        }
-    }
     {% endfor %}
 
     chart_obj = {
@@ -82,5 +79,56 @@
     }
     var myChart = new Chart(ctx, chart_obj );
 </script>
+
+
+<script>
+    var ta_ctx = document.getElementById('ta-chart').getContext('2d');
+    var dates = [];
+    var indicator = [];
+
+    // Extract dates and prices from the data
+    {% for item in ta_data %}
+    dates.push('{{ item.date }}');
+    indicator.push('{{ item.indicator }}');
+
+    {% endfor %}
+
+    ta_chart_obj = {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: '{{analytics_name}}',
+                data: indicator,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 1,
+                pointRadius: 0,
+                // fill: true
+            },
+            ]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D'
+                        }
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            }
+        }
+    }
+    var myChart = new Chart(ta_ctx, ta_chart_obj );
+</script>
+
 
 {% endblock %}
