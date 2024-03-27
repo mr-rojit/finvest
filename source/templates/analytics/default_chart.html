@@ -2,17 +2,29 @@
 
 {% block content %}
 
+<h2>{{company.name}}</h2>
+<br><br>
+
 <form action="" method="GET">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <input class="form-control" type="date" name="from" placeholder="Date from" value="{{request.GET.from}}">
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
             <input class="form-control" type="date" name="to" placeholder="Date to" value="{{request.GET.to}}">
         </div>
+        <div class="col-md-2">
+            <select name="analysis" class="form-control">
+                <option value=""> --- Select --- </option>
+                <option value="roc">ROC</option>
+                <option value="obv">On Balance Volume</option>
+                <option value="pvo">Percentile Volume Oscillator</option>
 
-        <div class="col-md-4">
+            </select>
+        </div>
+
+        <div class="col-md-3">
             <input class="btn btn-primary" type="submit" name="" value="Fetch">
         </div>
     </div>
@@ -21,38 +33,26 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <canvas id="lineChart" width="800" height="350"></canvas>
+    </div>
+    <div class="col-md-3">
+
     </div>
 </div>
 
-<center>
+
     <h3 class="mt-3 mb-3">Technical Analysis</h3>
-</center>
-
-
-<form action="" method="GET">
-    <div class="row">
-        <div class="col-md-4">
-            <select name="analysis" class="form-control">
-                <option value=""> --- Select --- </option>
-                <option value="roc">ROC</option>
-                <option value="obv">On Balance Volume</option>
-            </select>
-        </div>
-
-        <div class="col-md-4">
-            <input class="btn btn-primary" type="submit" name="" value="Apply">
-        </div>
-    </div>
-</form>
 <br>
 
 
 <div class="row">
 
-    <div class="col-md-12">
+    <div class="col-md-9">
         <canvas id="ta-chart" width="800" height="300"></canvas>
+    </div>
+    <div class="col-md-3">
+
     </div>
 </div>
 
@@ -78,8 +78,8 @@
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderWidth: 1,
-                pointRadius: 0,
-                // fill: true
+                pointRadius: 0.5,
+                fill: true
             },
             ]
         },
@@ -128,7 +128,7 @@
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderWidth: 1,
-                pointRadius: 0,
+                pointRadius: 0.5,
                 // fill: true
             },
             ]
