@@ -5,7 +5,7 @@ from django.views import View
 import time
 import json
 from ta.volatility import BollingerBands
-from ta.momentum import ROCIndicator, AwesomeOscillatorIndicator, KAMAIndicator, PercentageVolumeOscillator
+from ta.momentum import ROCIndicator, AwesomeOscillatorIndicator, KAMAIndicator, PercentageVolumeOscillator, StochasticOscillator
 from ta.volume import OnBalanceVolumeIndicator
 import pandas as pd
 
@@ -22,10 +22,21 @@ class Analysis(View):
         df = pd.DataFrame(data)
         roc = ROCIndicator(df['close'])
         return list(roc.roc())
+
+    def bollinger_bands(self, data):
+        df = pd.DataFrame(data)
+        bb = BollingerBands(df['close'])
+        return list(bb.bollinger_mavg())
+    
+    def stochastic_osc(self, data):
+        df = pd.DataFrame(data)
+        sto_osc = StochasticOscillator(df['close'], df['high'], df['low'])
+        return list(sto_osc.stoch())
     
     def awesome_oscillator(self, data):
-        # AwesomeOscillatorIndicator(data)
-        pass
+        df = pd.DataFrame(data)
+        awesome_osc = AwesomeOscillatorIndicator(df['high'], df['low'])
+        return list(awesome_osc.awesome_oscillator())
 
     def on_balance_volume(self, data):
         df = pd.DataFrame(data)
@@ -49,7 +60,7 @@ class Analysis(View):
             data_to = datetime.datetime.now().date()
 
         company = get_object_or_404(Company, pk=pk)
-        daily_data = DailyData.objects.filter(company=company, date__gt=data_from, date__lte=data_to).values('date', 'open', 'close', 'volume')
+        daily_data = DailyData.objects.filter(company=company, date__gt=data_from, date__lte=data_to).values('date', 'open', 'high', 'low', 'close', 'volume')
 
         analytics_data = []
         analytics_name = None
@@ -60,9 +71,24 @@ class Analysis(View):
             for i,j in zip(daily_data, roc):
                 analytics_data.append({'date': i['date'], 'indicator': j})
 
-        elif analysis_type and analysis_type == 'kama':
-            pass
-        
+        elif analysis_type and analysis_type == 'bb':
+            bb = self.bollinger_bands(daily_data)
+            analytics_name = 'Bollinger MAVG'
+            for i,j in zip(daily_data, bb):
+                analytics_data.append({'date': i['date'], 'indicator': j})
+
+        elif analysis_type and analysis_type == 'awesomeOsc':
+            awesome_osc = self.awesome_oscillator(daily_data)
+            analytics_name = 'Awesome Osciallator'
+            for i,j in zip(daily_data, awesome_osc):
+                analytics_data.append({'date': i['date'], 'indicator': j})
+
+        elif analysis_type and analysis_type == 'stoOsc':
+            sto_osc = self.stochastic_osc(daily_data)
+            analytics_name = 'Stochastic Osciallator'
+            for i,j in zip(daily_data, sto_osc):
+                analytics_data.append({'date': i['date'], 'indicator': j})
+
         elif analysis_type and analysis_type == 'obv':
             obv = self.on_balance_volume(daily_data)
             analytics_name = 'On Balance Volume Indicator'
