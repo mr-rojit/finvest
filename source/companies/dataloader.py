@@ -1,6 +1,11 @@
 import datetime
 import yfinance as yf
 from .models import Company, DailyData
+
+def test_corn():
+    print("Hello This is a test corn")
+    print("****************")
+
 class DataLoader:
 
     def auto_loader(self):
