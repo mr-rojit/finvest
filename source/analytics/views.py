@@ -62,6 +62,9 @@ class Analysis(View):
             data_to = datetime.datetime.now().date()
 
         company = get_object_or_404(Company, pk=pk)
+        is_prediction_available = False
+        if company.symbol in ['MSFT', 'GOOG', 'AAPL', 'AMZN']:
+            is_prediction_available = True
         daily_data = DailyData.objects.filter(company=company, date__gt=data_from, date__lte=data_to).values('date', 'open', 'high', 'low', 'close', 'volume')
         test_data = list(reversed(DailyData.objects.filter(company=company).values('close')))[:10]
         x = []
@@ -88,8 +91,6 @@ class Analysis(View):
         new_pred = list(DailyData.objects.filter(company=company, date__gt=last_date - datetime.timedelta(days=10)).values('date','close'))
         new_pred.append({'date':next_day_1, 'close': x[1] })
         new_pred.append({'date':next_day_2, 'close': x[0] })
-
-        print(new_pred)
         #
 
         
@@ -139,7 +140,8 @@ class Analysis(View):
             'ta_data': analytics_data,
             'analytics_name': analytics_name,
             'new_pred': new_pred,
-            'company': company
+            'company': company,
+            'is_prediction_available': is_prediction_available
         }
         return render(request, 'analytics/default_chart.html', context=context)
 

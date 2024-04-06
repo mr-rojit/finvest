@@ -44,7 +44,11 @@
     </div>
     <div class="col-md-3">
         <h3>Prediction</h3>
-        <canvas id="predChart" width="100%" height="100"></canvas>
+        {% if is_prediction_available %}
+            <canvas id="predChart" width="100%" height="100"></canvas>
+        {% else %}
+            <h4>No model available</h4>
+        {% endif %}
     </div>
 </div>
 
