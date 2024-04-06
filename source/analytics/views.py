@@ -9,6 +9,8 @@ from ta.momentum import ROCIndicator, AwesomeOscillatorIndicator, KAMAIndicator,
 from ta.volume import OnBalanceVolumeIndicator
 import pandas as pd
 
+from statsmodels.tsa.arima.model import ARIMA
+
 def get_historical_data(request, pk):
     company = get_object_or_404(Company, pk=pk)
     daily_data = DailyData.objects.filter(company=company).order_by('-date')
@@ -61,7 +63,36 @@ class Analysis(View):
 
         company = get_object_or_404(Company, pk=pk)
         daily_data = DailyData.objects.filter(company=company, date__gt=data_from, date__lte=data_to).values('date', 'open', 'high', 'low', 'close', 'volume')
+        test_data = list(reversed(DailyData.objects.filter(company=company).values('close')))[:10]
+        x = []
+        for i in test_data:
+            x.append(i['close'])
+        
+        for w in range(2):
+            trend_value = 0
 
+            for i in range(len(x)-1):
+                trend_value += (x[i] - x[i+1])
+            if w == 1:
+                pred = (trend_value/10)+x[0]
+            else:
+                pred = (trend_value)+x[0]
+            x.insert(0, pred)
+
+        #
+
+        last_date = daily_data.last()['date']
+        next_day_1 = last_date + datetime.timedelta(days=1)
+        next_day_2 = last_date + datetime.timedelta(days=2)
+
+        new_pred = list(DailyData.objects.filter(company=company, date__gt=last_date - datetime.timedelta(days=10)).values('date','close'))
+        new_pred.append({'date':next_day_1, 'close': x[1] })
+        new_pred.append({'date':next_day_2, 'close': x[0] })
+
+        print(new_pred)
+        #
+
+        
         analytics_data = []
         analytics_name = None
 
@@ -102,10 +133,12 @@ class Analysis(View):
                 analytics_data.append({'date': i['date'], 'indicator': j})
 
 
+
         context =  {
             'data': daily_data,
             'ta_data': analytics_data,
             'analytics_name': analytics_name,
+            'new_pred': new_pred,
             'company': company
         }
         return render(request, 'analytics/default_chart.html', context=context)
@@ -127,7 +160,8 @@ class CandleChart(View):
 
         company = get_object_or_404(Company, pk=pk)
         daily_data = DailyData.objects.filter(company=company, date__gt=data_from,date__lte=data_to).values('date', 'open', 'high', 'low', 'close')
-        
+
+
         chart_data = [
             {'x': time.mktime(d['date'].timetuple()),
             'open': d['open'],

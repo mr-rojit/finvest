@@ -27,7 +27,7 @@
         </div>
     </div>
     <br>
-<div id="container" style="height: 500px;"></div>
+<div id="container" style="height: 600px;"></div>
 
 <script>
     // Fetch data passed from Django view
@@ -42,10 +42,18 @@
             type: 'candlestick',
             name: 'OHLC Data',
             data: chartData,
-            color: 'green',
-            upColor: 'green',
-            lineColor: 'black'
-        }]
+            color: 'pink',
+            upColor: 'lightgreen',
+            upLineColor: 'green',
+            lineColor: 'black',
+        }],
+        rangeSelector : {
+			selected : 0,
+			inputEnabled: false
+		},
+        navigator: {
+            enabled: false
+        }
     });
 </script>
 {% endblock %}
