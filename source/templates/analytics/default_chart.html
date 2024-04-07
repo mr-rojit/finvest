@@ -84,11 +84,18 @@
             datasets: [{
                 label: 'close',
                 data: prices,
-                borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderWidth: 1,
+                borderWidth: 4,
                 pointRadius: 0.5,
-                fill: true
+                fill: true,
+                borderColor: function(context) {
+                // Set the last two points to a different color
+                if (context.dataIndex >= dates.length - 2) {
+                    return 'red';
+                } else {
+                    return 'rgb(75, 192, 192)';
+                }
+                },
             },
             ]
         },
