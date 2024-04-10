@@ -9,8 +9,6 @@ from ta.momentum import ROCIndicator, AwesomeOscillatorIndicator, KAMAIndicator,
 from ta.volume import OnBalanceVolumeIndicator
 import pandas as pd
 
-from statsmodels.tsa.arima.model import ARIMA
-
 def get_historical_data(request, pk):
     company = get_object_or_404(Company, pk=pk)
     daily_data = DailyData.objects.filter(company=company).order_by('-date')
